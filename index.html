@@ -74,6 +74,16 @@
     const nameInputElement = document.getElementById('name-input');
     const commentTextareaElement = document.getElementById('comment-textarea');
     
+    const initEventListeners = () => {
+      const buttonLikes = document.querySelectorAll('.like-button');
+    for (const buttonLike of buttonLikes) {
+      buttonLike.addEventListener('click', () => {
+        alert('Меня нажали');
+      });
+    };
+    };
+
+    initEventListeners();
 
     buttonElement.addEventListener('click', () => { 
       //nameInputElement.style.backgroundColor = '';
@@ -122,9 +132,29 @@
             </div>
           </div>
         </li>`
+
+        initEventListeners();
+        /*const buttonLikes = document.querySelectorAll('.like-button');
+    for (const buttonLike of buttonLikes) {
+      buttonLike.addEventListener('click', () => {
+        alert('Меня нажали');
+      });
+    };*/
+
         nameInputElement.value = '';
         commentTextareaElement.value = '';
     })
     console.log("It works!");
+
+    // ДОМАШНЕЕ ЗАДАНИЕ 2.10
+
+    /*const buttonLikes = document.querySelectorAll('.like-button');
+    for (const buttonLike of buttonLikes) {
+      buttonLike.addEventListener('click', () => {
+        alert('Меня нажали');
+      });
+    };*/
+    
+    
   </script>
 </html>
