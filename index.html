@@ -69,10 +69,19 @@
       }
       const commentPosts = document.querySelectorAll('.comment');
 
-      for (const commentPost of commentPosts) {
+      /*for (const commentPost of commentPosts) {
         commentPost.addEventListener('click', (event) => {
         const commentText = commentPost.querySelector('.comment-text').textContent; 
         commentTextareaElement.value = commentText;
+        })
+      }*/
+      for (const commentPost of commentPosts) {
+        commentPost.addEventListener('click', (event) => {
+          const commentHeader = commentPost.querySelector('.comment-header > div:first-child').textContent;
+          const commentText = commentPost.querySelector('.comment-text').textContent;
+          const replyText = `>${commentHeader}, ${commentText},`;
+
+          commentTextareaElement.value = replyText;
         })
 
       }
