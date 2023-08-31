@@ -31,6 +31,22 @@
     const nameInputElement = document.getElementById('name-input');
     const commentTextareaElement = document.getElementById('comment-textarea');
 
+   const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:personal-key/comments", 
+    {
+      method: "GET",
+    });
+    console.log(fetchPromise);
+
+    fetchPromise.then((response) => {
+    console.log(response);
+
+    const jsonPromise = response.json();
+    jsonPromise.then((responseData) => {
+      console.log(responseData);
+    });
+    });
+
+
     const commentsPeople = [
       {
         name: 'Глеб Фокин',
