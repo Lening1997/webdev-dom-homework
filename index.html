@@ -1,35 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Проект "Комменты"</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <ul id="list" class="comments">
-      </ul>
-      <div class="add-form">
-        <input id="name-input" value=""
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-        />
-        <textarea id="comment-textarea"
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-        ></textarea>
-        <div class="add-form-row">
-          <button id="add-button" class="add-form-button">Написать</button>
-        </div>
+<head>
+  <title>Проект "Комменты"</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <ul id="list" class="comments">
+    </ul>
+    <div class="add-form">
+      <input id="name-input" value="" type="text" class="add-form-name" placeholder="Введите ваше имя" />
+      <textarea id="comment-textarea" type="textarea" class="add-form-text" placeholder="Введите ваш коментарий"
+        rows="4"></textarea>
+      <div class="add-form-row">
+        <button id="add-button" class="add-form-button">Написать</button>
       </div>
     </div>
-    .error {
-      background-color: red;
-    }
+  </div>
+  .error {
+  background-color: red;
+  }
   </style>
   <script>
     "use strict";
@@ -37,50 +30,69 @@
     const listElement = document.getElementById('list');
     const nameInputElement = document.getElementById('name-input');
     const commentTextareaElement = document.getElementById('comment-textarea');
-    
+
     const commentsPeople = [
-    {
-      name: 'Глеб Фокин',
-      date: '12.02.22 12:18',
-      comment: 'Это будет первый комментарий на этой странице',
-      likesCounter: 3,
-      myLike: false,
-    },
-    {
-      name: 'Варвара Н.',
-      date: '13.02.22 19:22',
-      comment: 'Мне нравится как оформлена эта страница! ❤',
-      likesCounter: 75,
-      myLike: true,
-    }
-  ];
-
-  const initEventListeners = () => {
-  const likeButtons = document.querySelectorAll('.like-button');
-
-  for (const likeButton of likeButtons) {
-    likeButton.addEventListener('click', (event) => {
-      event.stopPropagation();
-
-      let index = likeButton.dataset.index;
-      if (commentsPeople[index].myLike) {
-        commentsPeople[index].myLike = false;
-        commentsPeople[index].likesCounter--;
-      } else {
-        commentsPeople[index].myLike = true;
-        commentsPeople[index].likesCounter++;
+      {
+        name: 'Глеб Фокин',
+        date: '12.02.22 12:18',
+        comment: 'Это будет первый комментарий на этой странице',
+        likesCounter: 3,
+        myLike: false,
+      },
+      {
+        name: 'Варвара Н.',
+        date: '13.02.22 19:22',
+        comment: 'Мне нравится как оформлена эта страница! ❤',
+        likesCounter: 75,
+        myLike: true,
       }
-      renderComments();
+    ];
 
-    });
-  }
-}
+    const initEventListeners = () => {
+      const likeButtons = document.querySelectorAll('.like-button');
 
-initEventListeners();
+      for (const likeButton of likeButtons) {
+        likeButton.addEventListener('click', (event) => {
+          event.stopPropagation();
 
-  const renderComments = () => {
-  const studentsHtml = commentsPeople.map((comment, index) => {
-    return`<li class="comment">
+          let index = likeButton.dataset.index;
+          if (commentsPeople[index].myLike) {
+            commentsPeople[index].myLike = false;
+            commentsPeople[index].likesCounter--;
+          } else {
+            commentsPeople[index].myLike = true;
+            commentsPeople[index].likesCounter++;
+          }
+          renderComments();
+
+        });
+      }
+      const commentPosts = document.querySelectorAll('.comment');
+
+      /*for (const commentPost of commentPosts) {
+        commentPost.addEventListener('click', (event) => {
+        const commentText = commentPost.querySelector('.comment-text').textContent; 
+        commentTextareaElement.value = commentText;
+        })
+      }*/
+      for (const commentPost of commentPosts) {
+        commentPost.addEventListener('click', (event) => {
+          const commentHeader = commentPost.querySelector('.comment-header > div:first-child').textContent;
+          const commentText = commentPost.querySelector('.comment-text').textContent;
+          const replyText = `>${commentHeader}, ${commentText},`;
+
+          commentTextareaElement.value = replyText;
+        })
+
+      }
+
+    }
+
+    initEventListeners();
+
+    const renderComments = () => {
+      const studentsHtml = commentsPeople.map((comment, index) => {
+        return `<li class="comment">
         <div class="comment-header">
           <div>${comment.name}</div>
         <div>${comment.date}</div>
@@ -97,31 +109,27 @@ initEventListeners();
           </div>
         </div>
       </li>`
-  }).join('');
-  listElement.innerHTML = studentsHtml;
-  initEventListeners();
-};
+      }).join('');
+      listElement.innerHTML = studentsHtml;
+      initEventListeners();
+    };
 
-  renderComments();
+    renderComments();
 
+    buttonElement.addEventListener('click', () => {
 
-
-
-
-    buttonElement.addEventListener('click', () => { 
-      
       nameInputElement.classList.remove('error');
 
-      
+
       commentTextareaElement.classList.remove('error');
 
-      if(nameInputElement.value === '') {
-       
-       nameInputElement.classList.add('error');
+      if (nameInputElement.value === '') {
+
+        nameInputElement.classList.add('error');
         return;
       }
-      if(commentTextareaElement.value === '') {
-        
+      if (commentTextareaElement.value === '') {
+
         commentTextareaElement.classList.add('error');
         return;
       }
@@ -135,17 +143,29 @@ initEventListeners();
         return n < 10 ? `0${n}` : n;
       }
 
+      const safeHtmlName = nameInputElement.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+
+      const safeHtmlComment = commentTextareaElement.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+
       const oldListHtml = listElement.innerHTML;
       listElement.innerHTML = oldListHtml + `<li class="comment">
           <div class="comment-header">
-            <div>${nameInputElement.value}</div>
+            <div>${safeHtmlName}</div>
             <div>
-           ${zero(currentDate.getDate())}.${zero(currentDate.getMonth()+1)}.${currentDate.getFullYear()} ${zero(currentDate.getHours())}:${currentDate.getMinutes()}
+           ${zero(currentDate.getDate())}.${zero(currentDate.getMonth() + 1)}.${currentDate.getFullYear()} ${zero(currentDate.getHours())}:${currentDate.getMinutes()}
             </div>
           </div>
           <div class="comment-body">
             <div class="comment-text">
-              ${commentTextareaElement.value}
+              ${safeHtmlComment}
             </div>
           </div>
           <div class="comment-footer">
@@ -156,12 +176,13 @@ initEventListeners();
           </div>
         </li>`
 
-        initEventListeners();
+      initEventListeners();
 
-        nameInputElement.value = '';
-        commentTextareaElement.value = '';
+      nameInputElement.value = '';
+      commentTextareaElement.value = '';
     })
     console.log("It works!");
-    
+
   </script>
+
 </html>
