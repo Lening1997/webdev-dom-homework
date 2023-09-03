@@ -43,13 +43,13 @@
       jsonPromise.then((responseData) => {
         console.log(responseData);
 
-       commentsPeople = responseData.todos;
-        renderCommentsPeople();
+       commentsPeople = responseData;
+        renderComments();
       });
     });
 
 
-    const commentsPeople = [
+    let commentsPeople = [
       {
         name: 'Глеб Фокин',
         date: '12.02.22 12:18',
