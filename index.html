@@ -32,21 +32,6 @@
     const commentTextareaElement = document.getElementById('comment-textarea');
 
 
-    const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
-      {
-        method: "GET",
-      });
-
-    fetchPromise.then((response) => {
-
-      const jsonPromise = response.json();
-      jsonPromise.then((responseData) => {
-        console.log(responseData);
-
-       commentsPeople = responseData;
-        renderComments();
-      });
-    });
 
 
     let commentsPeople = [
@@ -173,6 +158,9 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
 
+
+  
+
       const oldListHtml = listElement.innerHTML;
       listElement.innerHTML = oldListHtml + `<li class="comment">
           <div class="comment-header">
@@ -200,6 +188,42 @@
       commentTextareaElement.value = '';
     })
     console.log("It works!");
+    const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+        {
+          method: "POST",
+          body: JSON.stringify ({
+            text: 'nameInputElement.value',
+          }),
+        });
+
+      fetchPromise.then((response) => {
+
+        const jsonPromise = response.json();
+        jsonPromise.then((responseData) => {
+          console.log(responseData);
+
+          commentsPeople = responseData;
+          renderComments();
+        });
+      });
+
+
+      const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+      {
+        method: "GET",
+      });
+
+    fetchPromise.then((response) => {
+
+      const jsonPromise = response.json();
+      jsonPromise.then((responseData) => {
+        console.log(responseData);
+
+        commentsPeople = responseData;
+        renderComments();
+      });
+    });
+
 
   </script>
 
