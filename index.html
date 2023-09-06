@@ -31,7 +31,34 @@
     const nameInputElement = document.getElementById('name-input');
     const commentTextareaElement = document.getElementById('comment-textarea');
 
-    const commentsPeople = [
+    const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+  {
+    method: "GET",
+  });
+
+fetchPromise.then((response) => {
+
+  const jsonPromise = response.json();
+  jsonPromise.then((responseData) => {
+    commentsPeople = responseData.comments.map((comment) => {
+      return {
+        // Достаем имя автора
+        name: comment.author.name,
+        // Преобразовываем дату-строку в Date
+        date: new Date(comment.date),
+        text: comment.text,
+        likes: comment.likes,
+        // В api пока вообще нет признака лайкнутости
+        // Поэтому пока добавляем заглушку
+        isLiked: false,
+      };
+    });
+    renderComments();
+  });
+});
+
+
+    let commentsPeople = [
       {
         name: 'Глеб Фокин',
         date: '12.02.22 12:18',
@@ -91,21 +118,22 @@
     initEventListeners();
 
     const renderComments = () => {
+      console.log(commentsPeople);
       const studentsHtml = commentsPeople.map((comment, index) => {
         return `<li class="comment">
         <div class="comment-header">
           <div>${comment.name}</div>
-        <div>${comment.date}</div>
+          <div>${comment.date.toLocaleDateString()} ${comment.date.toLocaleTimeString()}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
-            ${comment.comment}
+            ${comment.text}
           </div>
         </div>
         <div class="comment-footer">
           <div class="likes">
-            <span class="likes-counter" >${comment.likesCounter}</span>
-            <button class="like-button ${comment.myLike ? '-active-like' : ''}" data-index="${index}"></button>
+            <span class="likes-counter" >${comment.likes}</span>
+            <button class="like-button ${comment.isLiked ? '-active-like' : ''}" data-index="${index}"></button>
           </div>
         </div>
       </li>`
@@ -114,7 +142,7 @@
       initEventListeners();
     };
 
-    renderComments();
+    //renderComments();
 
     buttonElement.addEventListener('click', () => {
 
@@ -133,6 +161,7 @@
         commentTextareaElement.classList.add('error');
         return;
       }
+
 
       const plusZero = (str) => {
         return str < 10 ? `0${str}` : str;
@@ -154,6 +183,31 @@
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
+
+      const fetchPost = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name: nameInputElement.value,
+            text: commentTextareaElement.value,
+          }),
+        });
+
+      fetchPost.then((response) => {
+
+        const jsonPromise = response.json();
+        jsonPromise.then(() => {
+          fetchPromise.then((response) =>
+            response.json()
+          ).then(responseData => {
+             commentsPeople = responseData.comments;
+              renderComments();
+            });
+      
+    });
+  });
+
+
 
       const oldListHtml = listElement.innerHTML;
       listElement.innerHTML = oldListHtml + `<li class="comment">
@@ -182,6 +236,12 @@
       commentTextareaElement.value = '';
     })
     console.log("It works!");
+
+
+
+
+
+
 
   </script>
 
