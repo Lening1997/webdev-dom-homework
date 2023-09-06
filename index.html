@@ -32,20 +32,30 @@
     const commentTextareaElement = document.getElementById('comment-textarea');
 
     const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
-      {
-        method: "GET",
-      });
+  {
+    method: "GET",
+  });
 
-    fetchPromise.then((response) => {
+fetchPromise.then((response) => {
 
-      const jsonPromise = response.json();
-      jsonPromise.then((responseData) => {
-        console.log(responseData);
-
-        commentsPeople = responseData.comments;
-        renderComments();
-      });
+  const jsonPromise = response.json();
+  jsonPromise.then((responseData) => {
+    commentsPeople = responseData.comments.map((comment) => {
+      return {
+        // Достаем имя автора
+        name: comment.author.name,
+        // Преобразовываем дату-строку в Date
+        date: new Date(comment.date),
+        text: comment.text,
+        likes: comment.likes,
+        // В api пока вообще нет признака лайкнутости
+        // Поэтому пока добавляем заглушку
+        isLiked: false,
+      };
     });
+    renderComments();
+  });
+});
 
 
     let commentsPeople = [
@@ -112,8 +122,8 @@
       const studentsHtml = commentsPeople.map((comment, index) => {
         return `<li class="comment">
         <div class="comment-header">
-          <div>${comment.author.name}</div>
-        <div>${comment.date}</div>
+          <div>${comment.name}</div>
+          <div>${comment.date.toLocaleDateString()} ${comment.date.toLocaleTimeString()}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
