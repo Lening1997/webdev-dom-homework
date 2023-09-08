@@ -32,30 +32,30 @@
     const commentTextareaElement = document.getElementById('comment-textarea');
 
     const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
-  {
-    method: "GET",
-  });
+      {
+        method: "GET",
+      });
 
-fetchPromise.then((response) => {
+    fetchPromise.then((response) => {
 
-  const jsonPromise = response.json();
-  jsonPromise.then((responseData) => {
-    commentsPeople = responseData.comments.map((comment) => {
-      return {
-        // Достаем имя автора
-        name: comment.author.name,
-        // Преобразовываем дату-строку в Date
-        date: new Date(comment.date),
-        text: comment.text,
-        likes: comment.likes,
-        // В api пока вообще нет признака лайкнутости
-        // Поэтому пока добавляем заглушку
-        isLiked: false,
-      };
+      const jsonPromise = response.json();
+      jsonPromise.then((responseData) => {
+        commentsPeople = responseData.comments.map((comment) => {
+          return {
+            // Достаем имя автора
+            name: comment.author.name,
+            // Преобразовываем дату-строку в Date
+            date: new Date(comment.date),
+            text: comment.text,
+            likes: comment.likes,
+            // В api пока вообще нет признака лайкнутости
+            // Поэтому пока добавляем заглушку
+            isLiked: false,
+          };
+        });
+        renderComments();
+      });
     });
-    renderComments();
-  });
-});
 
 
     let commentsPeople = [
@@ -200,12 +200,31 @@ fetchPromise.then((response) => {
           fetchPromise.then((response) =>
             response.json()
           ).then(responseData => {
-             commentsPeople = responseData.comments;
-              renderComments();
-            });
-      
-    });
-  });
+            commentsPeople = responseData.comments;
+            renderComments();
+          });
+
+        });
+      });
+
+
+     /* const fetchPost = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name: nameInputElement.value,
+            text: commentTextareaElement.value,
+          }),
+        });
+        .then((response) => {
+        return response.json();
+        })
+        .then (() => {
+
+        })*/
+
+        /*buttonElement.disabled = true;
+        buttonElement.textContent = 'Комментарий добавляется...';*/
 
 
 
