@@ -210,7 +210,21 @@
             name: nameInputElement.value,
             text: commentTextareaElement.value,
           }),
-        });
+        })
+      /*.then((response) => {
+        return response.json();
+        })
+        .then (() => {
+          return fetchPromise;
+        })
+        .then((response) => {
+        return response.json();
+        })
+        .then ((responseData) => {
+        return commentsPeople = responseData.comments;
+            renderComments();
+        })*/
+
 
       fetchPost.then((response) => {
 
@@ -226,21 +240,7 @@
         });
       });
 
-
-     /* const fetchPost = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            name: nameInputElement.value,
-            text: commentTextareaElement.value,
-          }),
-        });
-        .then((response) => {
-        return response.json();
-        })
-        .then (() => {
-
-        })*/
+        
 
         /*buttonElement.disabled = true;
         buttonElement.textContent = 'Комментарий добавляется...';*/
