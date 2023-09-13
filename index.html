@@ -36,7 +36,7 @@
         method: "GET",
       });
 
-    fetchPromise.then((response) => {
+    /*fetchPromise.then((response) => {
 
       const jsonPromise = response.json();
       jsonPromise.then((responseData) => {
@@ -55,7 +55,26 @@
         });
         renderComments();
       });
+    });*/
+
+    fetchPromise.then((response) => {
+  return response.json();
+}).then((responseData) => {
+    commentsPeople = responseData.comments.map((comment) => {
+      return {
+        // Достаем имя автора
+        name: comment.author.name,
+        // Преобразовываем дату-строку в Date
+        date: new Date(comment.date),
+        text: comment.text,
+        likes: comment.likes,
+        // В api пока вообще нет признака лайкнутости
+        // Поэтому пока добавляем заглушку
+        isLiked: false,
+      };
     });
+    renderComments();
+  });
 
 
     let commentsPeople = [
