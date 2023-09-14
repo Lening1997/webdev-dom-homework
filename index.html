@@ -9,8 +9,10 @@
 
 <body>
   <div class="container">
+    <div class="start-loader">Подождите, пожалуйста, идет загрузка...</div>
     <ul id="list" class="comments">
     </ul>
+    <div class="comment-loader comment-loader-hidden">Комментарий добавляется...</div>
     <div class="add-form">
       <input id="name-input" value="" type="text" class="add-form-name" placeholder="Введите ваше имя" />
       <textarea id="comment-textarea" type="textarea" class="add-form-text" placeholder="Введите ваш коментарий"
@@ -73,7 +75,10 @@
         isLiked: false,
       };
     });
+    startLoader.classList.add("start-loader-hidden");
     renderComments();
+    commentLoader.classList.add("comment-loader-hidden");
+    add.Form.classList.remove("add-form-loader-hidden");
   });
 
 
@@ -211,6 +216,8 @@
             text: commentTextareaElement.value,
           }),
         })
+        addForm.classList.add("add-form-loader-hidden");
+        commentLoader.classList.remove("comment-loader-hidden");
       /*.then((response) => {
         return response.json();
         })
