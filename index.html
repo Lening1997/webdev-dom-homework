@@ -288,7 +288,12 @@ commentLoader.style.display = "none";
     }),
   })
   .then((response) => {
-    return response.json();
+    if(response.status === 500) {
+      //Код который обработает ошибку
+    } else {
+      return response.json();
+    }
+    
   })
   .then(() => {
     commentLoader.style.display = "flex";
@@ -301,6 +306,12 @@ commentLoader.style.display = "none";
     commentLoader.style.display = "none";
     addForm.style.display = "flex";
   })
+  .catch((error) => {
+    buttonElement.disabled = false;
+    buttonElement.textContent = "Добавить";
+    alert("Кажется что-то пошло не так...");
+    console.warn(error);
+  });
 
         
 
