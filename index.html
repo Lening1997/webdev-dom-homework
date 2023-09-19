@@ -290,6 +290,7 @@ commentLoader.style.display = "none";
   .then((response) => {
     if(response.status === 500) {
       //Код который обработает ошибку
+      return Promise.reject("Сервер упал");
     } else {
       return response.json();
     }
