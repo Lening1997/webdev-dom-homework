@@ -37,10 +37,10 @@
     const startLoader = document.querySelector(".start-loader");
 
 
-    const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+    /*const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
       {
         method: "GET",
-      });
+      });*/
 
     /*fetchPromise.then((response) => {
 
@@ -63,7 +63,7 @@
       });
     });*/
 
-    fetchPromise.then((response) => {
+   /* fetchPromise.then((response) => {
   return response.json();
 }).then((responseData) => {
     commentsPeople = responseData.comments.map((comment) => {
@@ -83,8 +83,37 @@
     renderComments();
     commentLoader.classList.add("comment-loader-hidden");
     add.Form.classList.remove("add-form-loader-hidden");
-  });
+  });*/
+  startLoader.style.display = "flex";
+commentLoader.style.display = "none";
+  const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+    {
+      method: "GET",
+    });
 
+  fetchPromise.then((response) => {
+    return response.json();
+  })
+          // убрали loader
+          .then((responseLoader) => {
+            startLoader.style.display = "none";
+            return responseLoader;
+          }).then((responseData) => {
+            commentsPeople = responseData.comments.map((comment) => {
+              return {
+                // Достаем имя автора
+                name: comment.author.name,
+                // Преобразовываем дату-строку в Date
+                date: new Date(comment.date),
+                text: comment.text,
+                likes: comment.likes,
+                // В api пока вообще нет признака лайкнутости
+                // Поэтому пока добавляем заглушку
+                isLiked: false,
+              };
+            });
+  renderComments();
+})
 
     let commentsPeople = [
       {
@@ -212,7 +241,7 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
 
-      const fetchPost = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+      /*const fetchPost = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
         {
           method: "POST",
           body: JSON.stringify({
@@ -221,7 +250,7 @@
           }),
         })
         addForm.classList.add("add-form-loader-hidden");
-        commentLoader.classList.remove("comment-loader-hidden");
+        commentLoader.classList.remove("comment-loader-hidden");*/
       /*.then((response) => {
         return response.json();
         })
@@ -232,12 +261,12 @@
         return response.json();
         })
         .then ((responseData) => {
-        return commentsPeople = responseData.comments;
+         commentsPeople = responseData.comments;
             renderComments();
         })*/
 
 
-      fetchPost.then((response) => {
+      /*fetchPost.then((response) => {
 
         const jsonPromise = response.json();
         jsonPromise.then(() => {
@@ -249,7 +278,29 @@
           });
 
         });
-      });
+      });*/
+      const fetchPost = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+  {
+    method: "POST",
+    body: JSON.stringify({
+      name: nameInputElement.value,
+      text: commentTextareaElement.value,
+    }),
+  })
+  .then((response) => {
+    return response.json();
+  })
+  .then(() => {
+    commentLoader.style.display = "flex";
+    addForm.style.display = "none";
+  })
+  .then (() => {
+    return fetchPromise;
+  })
+  .then(() => {
+    commentLoader.style.display = "none";
+    addForm.style.display = "flex";
+  })
 
         
 
