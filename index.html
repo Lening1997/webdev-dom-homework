@@ -63,57 +63,62 @@
       });
     });*/
 
-   /* fetchPromise.then((response) => {
-  return response.json();
-}).then((responseData) => {
-    commentsPeople = responseData.comments.map((comment) => {
-      return {
-        // Достаем имя автора
-        name: comment.author.name,
-        // Преобразовываем дату-строку в Date
-        date: new Date(comment.date),
-        text: comment.text,
-        likes: comment.likes,
-        // В api пока вообще нет признака лайкнутости
-        // Поэтому пока добавляем заглушку
-        isLiked: false,
-      };
-    });
-    startLoader.classList.add("start-loader-hidden");
-    renderComments();
-    commentLoader.classList.add("comment-loader-hidden");
-    add.Form.classList.remove("add-form-loader-hidden");
-  });*/
-  startLoader.style.display = "flex";
-commentLoader.style.display = "none";
-  const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
-    {
-      method: "GET",
-    });
+    /* fetchPromise.then((response) => {
+   return response.json();
+ }).then((responseData) => {
+     commentsPeople = responseData.comments.map((comment) => {
+       return {
+         // Достаем имя автора
+         name: comment.author.name,
+         // Преобразовываем дату-строку в Date
+         date: new Date(comment.date),
+         text: comment.text,
+         likes: comment.likes,
+         // В api пока вообще нет признака лайкнутости
+         // Поэтому пока добавляем заглушку
+         isLiked: false,
+       };
+     });
+     startLoader.classList.add("start-loader-hidden");
+     renderComments();
+     commentLoader.classList.add("comment-loader-hidden");
+     add.Form.classList.remove("add-form-loader-hidden");
+   });*/
+    startLoader.style.display = "flex";
+    commentLoader.style.display = "none";
+    const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
+      {
+        method: "GET",
+      });
 
-  fetchPromise.then((response) => {
-    return response.json();
-  })
-          // убрали loader
-          .then((responseLoader) => {
-            startLoader.style.display = "none";
-            return responseLoader;
-          }).then((responseData) => {
-            commentsPeople = responseData.comments.map((comment) => {
-              return {
-                // Достаем имя автора
-                name: comment.author.name,
-                // Преобразовываем дату-строку в Date
-                date: new Date(comment.date),
-                text: comment.text,
-                likes: comment.likes,
-                // В api пока вообще нет признака лайкнутости
-                // Поэтому пока добавляем заглушку
-                isLiked: false,
-              };
-            });
-  renderComments();
-})
+    fetchPromise.then((response) => {
+      if (response.status === 201) {
+        return response.json();
+      } else if (response.status === 500) {
+        throw new Error('Сервер упал')
+      }
+      return response.json();
+    })
+      // убрали loader
+      .then((responseLoader) => {
+        startLoader.style.display = "none";
+        return responseLoader;
+      }).then((responseData) => {
+        commentsPeople = responseData.comments.map((comment) => {
+          return {
+            // Достаем имя автора
+            name: comment.author.name,
+            // Преобразовываем дату-строку в Date
+            date: new Date(comment.date),
+            text: comment.text,
+            likes: comment.likes,
+            // В api пока вообще нет признака лайкнутости
+            // Поэтому пока добавляем заглушку
+            isLiked: false,
+          };
+        });
+        renderComments();
+      })
 
     let commentsPeople = [
       {
@@ -280,44 +285,52 @@ commentLoader.style.display = "none";
         });
       });*/
       const fetchPost = fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments",
-  {
-    method: "POST",
-    body: JSON.stringify({
-      name: nameInputElement.value,
-      text: commentTextareaElement.value,
-    }),
-  })
-  .then((response) => {
-    if(response.status === 500) {
-      //Код который обработает ошибку
-      return Promise.reject("Сервер упал");
-    } else {
-      return response.json();
-    }
-    
-  })
-  .then(() => {
-    commentLoader.style.display = "flex";
-    addForm.style.display = "none";
-  })
-  .then (() => {
-    return fetchPromise;
-  })
-  .then(() => {
-    commentLoader.style.display = "none";
-    addForm.style.display = "flex";
-  })
-  .catch((error) => {
-    buttonElement.disabled = false;
-    buttonElement.textContent = "Добавить";
-    alert("Кажется что-то пошло не так...");
-    console.warn(error);
-  });
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name: nameInputElement.value,
+            text: commentTextareaElement.value,
+            forceError: true,
+          }),
+        })
+        .then((response) => {
+          if (response.status === 201) {
+            return response.json();
+          } else if (response.status === 500) {
+            throw new Error('Сервер упал')
+          } else if (response.status === 400) {
+            throw new Error('Имя и комментрий не должны быть короче трех символов')
+          }
+        })
+        .then(() => {
+          commentLoader.style.display = "flex";
+          addForm.style.display = "none";
+        })
+        .then(() => {
+          return fetchPromise;
+        })
+        .then(() => {
+          commentLoader.style.display = "none";
+          addForm.style.display = "flex";
+        })
+        .catch((error) => {
+          buttonElement.disabled = false;
+          buttonElement.textContent = "Добавить";
+          if (error.message === 'Failed to fetch') {
+            alert('Интернет не работает');
+          } else {
+            alert(error.message);
+          } 
+          if  (error.message === "Ошибка сервера") {
+          fetchPost();
+          }
+          console.warn(error);
+        });
 
-        
 
-        /*buttonElement.disabled = true;
-        buttonElement.textContent = 'Комментарий добавляется...';*/
+
+      /*buttonElement.disabled = true;
+      buttonElement.textContent = 'Комментарий добавляется...';*/
 
 
 
