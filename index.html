@@ -121,20 +121,6 @@
       })
 
     let commentsPeople = [
-      {
-        name: 'Глеб Фокин',
-        date: '12.02.22 12:18',
-        comment: 'Это будет первый комментарий на этой странице',
-        likesCounter: 3,
-        myLike: false,
-      },
-      {
-        name: 'Варвара Н.',
-        date: '13.02.22 19:22',
-        comment: 'Мне нравится как оформлена эта страница! ❤',
-        likesCounter: 75,
-        myLike: true,
-      }
     ];
 
     const initEventListeners = () => {
@@ -334,7 +320,7 @@
 
 
 
-      const oldListHtml = listElement.innerHTML;
+      /*const oldListHtml = listElement.innerHTML;
       listElement.innerHTML = oldListHtml + `<li class="comment">
           <div class="comment-header">
             <div>${safeHtmlName}</div>
@@ -353,7 +339,7 @@
               <button class="like-button" data-index="index"></button>
             </div>
           </div>
-        </li>`
+        </li>`*/
 
       initEventListeners();
 
