@@ -306,13 +306,21 @@
             alert('Интернет не работает');
           } else {
             alert(error.message);
-          } 
-          if  (error.message === "Ошибка сервера") {
-          fetchPost();
+          }
+          if (error.message === "Ошибка сервера") {
+            fetchPost();
           }
           console.warn(error);
         });
 
+
+      function fetchComments() {
+        return fetch('https://wedev-api.sky.pro/api/v1/:lening-daria/comments')
+          .then((res) => res.json())
+          .then((responseData) => {
+          })
+      };
+      renderComments();
 
 
       /*buttonElement.disabled = true;
