@@ -9,8 +9,7 @@ const startLoader = document.querySelector(".start-loader");
 
 let commentsPeople = [];
 
-startLoader.style.display = "flex";
-commentLoader.style.display = "none";
+
 
 
 /* map - фильтрует массив но создает новый (если хочешь его использовать нужна переменная) */
@@ -103,6 +102,10 @@ const addComment = () => {
         fetchPost();
       }
       console.warn(error);
+    });
+    .finally(() => {
+      commentLoader.style.display = "none";
+      addForm.style.display = "flex";
     });
 }
 
@@ -210,5 +213,7 @@ buttonElement.addEventListener('click', () => {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
 
+startLoader.style.display = "flex";
+commentLoader.style.display = "none";
   addComment();
 });
