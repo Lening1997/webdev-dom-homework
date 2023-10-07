@@ -102,7 +102,7 @@ const addComment = () => {
         fetchPost();
       }
       console.warn(error);
-    });
+    })
     .finally(() => {
       commentLoader.style.display = "none";
       addForm.style.display = "flex";
