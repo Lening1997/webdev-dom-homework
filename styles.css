@@ -139,3 +139,7 @@ body {
   .error {
     border: 1px solid red;
   }
+
+  .comment-loader {
+    display: none;
+  }

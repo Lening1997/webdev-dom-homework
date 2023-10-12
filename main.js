@@ -54,6 +54,7 @@ const getAllComments = () => {
 }
 
 const addComment = () => {
+  buttonElement.disabled = true;
 
   fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments", {
     method: "POST",
@@ -75,9 +76,6 @@ const addComment = () => {
     .then((res) => {
       if (res.result === 'ok') {
         commentLoader.style.display = "flex";
-        addForm.style.display = "none";
-        commentLoader.style.display = "none";
-        addForm.style.display = "flex";
 
         getAllComments();
         renderComments();
@@ -90,9 +88,6 @@ const addComment = () => {
       }
     })
     .catch((error) => {
-      buttonElement.disabled = false;
-      buttonElement.textContent = "Добавить";
-
       if (error.message === 'Failed to fetch') {
         alert('Интернет не работает');
       } else {
@@ -104,8 +99,10 @@ const addComment = () => {
       console.warn(error);
     })
     .finally(() => {
-      commentLoader.style.display = "none";
-      addForm.style.display = "flex";
+      buttonElement.disabled = false;
+      setTimeout(() => {
+        commentLoader.style.display = "none";
+      }, 3000);
     });
 }
 
@@ -213,7 +210,5 @@ buttonElement.addEventListener('click', () => {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
 
-startLoader.style.display = "flex";
-commentLoader.style.display = "none";
   addComment();
 });
