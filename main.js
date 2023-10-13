@@ -1,4 +1,8 @@
+import { getTodos, postTodo } from "./api.js";
 "use strict";
+
+
+
 const buttonElement = document.getElementById('add-button');
 const listElement = document.getElementById('list');
 const nameInputElement = document.getElementById('name-input');
@@ -17,7 +21,7 @@ let commentsPeople = [];
 /* reduce - подсчитывает сумму */
 
 const getAllComments = () => {
-  fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments", {
+  /*fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments", {
     method: "GET",
   }).then((response) => {
     // Вернулся Promise
@@ -28,7 +32,7 @@ const getAllComments = () => {
     }
 
     return response.json();
-  }).then((responseData) => {
+  })*/getTodos().then((responseData) => {
     // Вернулись данные
 
     // Убрали лоадер
@@ -56,12 +60,11 @@ const getAllComments = () => {
 const addComment = () => {
   buttonElement.disabled = true;
 
-  fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments", {
+  /*fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments", {
     method: "POST",
     body: JSON.stringify({
       name: nameInputElement.value,
       text: commentTextareaElement.value,
-      /* Вызвать ошибку или нет */
       forceError: false,
     }),
   }).then((response) => {
@@ -72,8 +75,10 @@ const addComment = () => {
     } else if (response.status === 400) {
       throw new Error('Имя и комментрий не должны быть короче трех символов')
     }
-  })
-    .then((res) => {
+  })*/
+  postTodo({
+    text: commentTextareaElement.value,
+}).then((res) => {
       if (res.result === 'ok') {
         commentLoader.style.display = "flex";
 
