@@ -77,7 +77,8 @@ const addComment = () => {
     }
   })*/
   postTodo({
-    text: commentTextareaElement.value,
+    text: commentTextareaElement.value, nameInputElement
+
 }).then((res) => {
       if (res.result === 'ok') {
         commentLoader.style.display = "flex";

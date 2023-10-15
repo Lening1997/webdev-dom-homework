@@ -12,7 +12,7 @@ export function getTodos() {
     return response.json();
 })};
 
-export function postTodo({ text }) {
+export function postTodo({ text, nameInputElement }) {
    return fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments", {
         method: "POST",
         body: JSON.stringify({
