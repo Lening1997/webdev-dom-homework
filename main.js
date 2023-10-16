@@ -1,4 +1,5 @@
 import { getTodos, postTodo } from "./api.js";
+import { renderTodo } from "./render.js";
 "use strict";
 
 
@@ -157,7 +158,9 @@ const initEventListeners = () => {
 initEventListeners();
 
 const renderComments = () => {
-  const studentsHtml = commentsPeople.map((comment, index) => {
+  renderTodo()
+};
+  /*const studentsHtml = commentsPeople.map((comment, index) => {
     return `<li class="comment">
     <div class="comment-header">
       <div>${comment.name}</div>
@@ -180,7 +183,7 @@ const renderComments = () => {
   listElement.innerHTML = studentsHtml;
 
   initEventListeners();
-};
+};*/
 
 buttonElement.addEventListener('click', () => {
 
