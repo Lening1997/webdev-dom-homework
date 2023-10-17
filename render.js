@@ -1,4 +1,7 @@
+import { commentsPeople, initEventListeners } from "./main.js";
+
 export function renderTodo() {
+    const listElement = document.getElementById('list');
     const studentsHtml = commentsPeople.map((comment, index) => {
         return `<li class="comment">
         <div class="comment-header">

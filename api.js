@@ -12,11 +12,11 @@ export function getTodos() {
     return response.json();
 })};
 
-export function postTodo({ text, nameInputElement }) {
+export function postTodo({ text, name }) {
    return fetch("https://wedev-api.sky.pro/api/v1/:lening-daria/comments", {
         method: "POST",
         body: JSON.stringify({
-          name: nameInputElement.value,
+          name: name,
           text: text,
           forceError: false,
         }),
