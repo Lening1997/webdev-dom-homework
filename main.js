@@ -1,23 +1,84 @@
-import { getTodos, postTodo } from "./api.js";
-import { renderTodo } from "./render.js";
 "use strict";
-
-
+import { getTodos, postTodo, postReg, postAuth } from "./api.js";
+import { renderTodo } from "./render.js";
 
 const buttonElement = document.getElementById('add-button');
-const listElement = document.getElementById('list');
 const nameInputElement = document.getElementById('name-input');
 const commentTextareaElement = document.getElementById('comment-textarea');
 const commentLoader = document.querySelector(".comment-loader");
-const addForm = document.querySelector(".add-form");
 const startLoader = document.querySelector(".start-loader");
+
+/* */
+const formAuth = document.querySelector('.form__auth');
+const formReg = document.querySelector('.form__reg');
+const formAdd = document.querySelector('.add-form');
+const formAuthBtn = document.querySelector('.reg__btn');
+
+formAuthBtn.addEventListener('click', () => {
+  formAuth.style.display = 'none';
+  formReg.style.display = 'flex';
+});
+
+// localStorage.setItem('TOKEN', '123123123');
+const user = localStorage.getItem('TOKEN');
+
+export const changeBlocks = () => {
+  formAuth.style.display = "none";
+  formReg.style.display = "none";
+  formAdd.style.display = 'flex';
+  nameInputElement.value = localStorage.getItem('NAME');
+  nameInputElement.readOnly = true;
+};
+
+if (!user) {
+  formAdd.style.display = 'none';
+
+  formAuth.addEventListener('submit', (e) => {
+    /* Отмена стандартного поведения */
+    e.preventDefault();
+
+    /* e.target - это наша форма */
+    // const target = e.target;
+
+    const login = formAuth.querySelector('.login').value;
+    const password = formAuth.querySelector('.password').value;
+
+    const payload = {
+      login,
+      password
+    };
+
+    postAuth(payload);
+  });
+
+  formReg.addEventListener('submit', (e) => {
+    /* Отмена стандартного поведения */
+    e.preventDefault();
+
+    /* e.target - это наша форма */
+    // const target = e.target;
+    const name = formReg.querySelector('.name').value;
+    const login = formReg.querySelector('.login').value;
+    const password = formReg.querySelector('.password').value;
+
+    const payload = {
+      name,
+      login,
+      password
+    };
+
+    postReg(payload);
+  });
+} else {
+  changeBlocks();
+}
 
 export let commentsPeople = [];
 
 
 const getAllComments = () => {
- getTodos().then((responseData) => {
-   
+  getTodos().then((responseData) => {
+
     startLoader.style.display = "none";
 
     commentsPeople = responseData.comments.map((comment) => {
@@ -40,32 +101,31 @@ const getAllComments = () => {
 
 const addComment = () => {
   buttonElement.disabled = true;
-  commentLoader.style.display="block";
+  commentLoader.style.display = "block";
   postTodo({
     text: commentTextareaElement.value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;"), name: nameInputElement.value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;"), name: nameInputElement.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
 
-}).then((res) => {
-      if (res.result === 'ok') {
-        commentLoader.style.display = "flex";
+  }).then((res) => {
+    if (res.result === 'ok') {
+      commentLoader.style.display = "flex";
 
-        getAllComments();
-        renderComments();
-        initEventListeners();
+      getAllComments();
+      renderComments();
+      initEventListeners();
 
-        nameInputElement.value = '';
-        commentTextareaElement.value = '';
-      } else {
-        alert('Произошла ошибка');
-      }
-    })
+      commentTextareaElement.value = '';
+    } else {
+      alert('Произошла ошибка');
+    }
+  })
     .catch((error) => {
       if (error.message === 'Failed to fetch') {
         alert('Интернет не работает');
@@ -79,7 +139,7 @@ const addComment = () => {
     })
     .finally(() => {
       buttonElement.disabled = false;
-        commentLoader.style.display = "none";
+      commentLoader.style.display = "none";
     });
 }
 
@@ -91,10 +151,10 @@ export const initEventListeners = () => {
   for (const likeButton of likeButtons) {
     likeButton.addEventListener('click', (event) => {
       event.stopPropagation();
-      
-      let index = likeButton.dataset.index; 
+
+      let index = likeButton.dataset.index;
       console.log(index);
-      if (commentsPeople[index].isLiked) { 
+      if (commentsPeople[index].isLiked) {
         commentsPeople[index].isLiked = false;
         commentsPeople[index].likes--;
       } else {
@@ -125,7 +185,7 @@ initEventListeners();
 const renderComments = () => {
   renderTodo()
 };
- 
+
 buttonElement.addEventListener('click', () => {
 
   nameInputElement.classList.remove('error');
@@ -141,3 +201,4 @@ buttonElement.addEventListener('click', () => {
 
   addComment();
 });
+

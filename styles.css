@@ -22,7 +22,9 @@ body {
   }
 
   .comment,
-  .add-form {
+  .add-form,
+  .form__auth,
+  .form__reg {
     width: 596px;
     box-sizing: border-box;
     background: radial-gradient(
@@ -141,5 +143,21 @@ body {
   }
 
   .comment-loader {
+    display: none;
+  }
+
+
+  /* Auth/Reg */
+  .form__auth, .form__reg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .form__reg {
     display: none;
   }
