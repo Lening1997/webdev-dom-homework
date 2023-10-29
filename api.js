@@ -54,7 +54,7 @@ export function postReg({ name, login, password }) {
     } else if (response.status === 500) {
       throw new Error('Сервер упал')
     } else if (response.status === 400) {
-      throw new Error('Имя и комментрий не должны быть короче трех символов')
+      throw new Error('Пользователь с таким логином уже существует')
     }
   }).then((res) => {
     if (res) {
@@ -82,7 +82,7 @@ export function postAuth({ login, password }) {
     } else if (response.status === 500) {
       throw new Error('Сервер упал')
     } else if (response.status === 400) {
-      throw new Error('Имя и комментрий не должны быть короче трех символов')
+      throw new Error('Введены неверные данные')
     }
   }).then((res) => {
     if (res) {
@@ -94,5 +94,8 @@ export function postAuth({ login, password }) {
 
       changeBlocks();
     }
+  })
+  .catch((error) => {
+      alert('Интернет не работает');
   })
 };
