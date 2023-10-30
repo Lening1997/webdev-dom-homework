@@ -95,7 +95,4 @@ export function postAuth({ login, password }) {
       changeBlocks();
     }
   })
-  .catch((error) => {
-      alert('Интернет не работает');
-  })
 };

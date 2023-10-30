@@ -48,7 +48,9 @@ if (!user) {
       password
     };
 
-    postAuth(payload);
+    postAuth(payload).catch((error) => {
+      alert(error.message);
+    });
   });
 
   formReg.addEventListener('submit', (e) => {
@@ -67,7 +69,9 @@ if (!user) {
       password
     };
 
-    postReg(payload);
+    postReg(payload).catch((error) => {
+      alert(error.message);
+    });
   });
 } else {
   changeBlocks();
