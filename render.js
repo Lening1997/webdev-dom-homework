@@ -1,12 +1,13 @@
+import { format } from 'date-fns';
 import { commentsPeople, initEventListeners } from "./main.js";
 
 export function renderTodo() {
-    const listElement = document.getElementById('list');
-    const studentsHtml = commentsPeople.map((comment, index) => {
-        return `<li class="comment">
+  const listElement = document.getElementById('list');
+  const studentsHtml = commentsPeople.map((comment, index) => {
+    return `<li class="comment">
         <div class="comment-header">
           <div>${comment.name}</div>
-          <div>${comment.date.toLocaleDateString()} ${comment.date.toLocaleTimeString()}</div>
+          <div>${format(comment.date, 'yyyy-MM-dd hh:mm:ss')}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
@@ -20,9 +21,9 @@ export function renderTodo() {
           </div>
         </div>
       </li>`
-      }).join('');
-    
-      listElement.innerHTML = studentsHtml;
-    
-      initEventListeners();
+  }).join('');
+
+  listElement.innerHTML = studentsHtml;
+
+  initEventListeners();
 };

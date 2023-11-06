@@ -1,4 +1,5 @@
 import { changeBlocks } from "./main.js";
+import _ from 'lodash';
 
 export function getTodos() {
   return fetch("https://wedev-api.sky.pro/api/v2/:lening-daria/comments", {
@@ -25,7 +26,7 @@ export function postTodo({ text, name }) {
       'Authorization': `Bearer ${localStorage.getItem('TOKEN')}`,
     },
     body: JSON.stringify({
-      name: name,
+      name: _.capitalize(name),
       text: text,
       forceError: false,
     }),
@@ -44,7 +45,7 @@ export function postReg({ name, login, password }) {
   return fetch("https://wedev-api.sky.pro/api/user", {
     method: "POST",
     body: JSON.stringify({
-      name: name,
+      name: _.capitalize(name),
       login: login,
       password: password
     }),
